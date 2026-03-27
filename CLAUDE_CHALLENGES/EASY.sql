@@ -1,3 +1,9 @@
+-- ============================================
+-- Warunki umieszczenia w portfolio:
+-- Zadanie wykonane samodzielnie, bez podpowiedzi
+-- ============================================
+
+
 -- Zadanie: Klienci z więcej niż 2 zamówieniami
 -- Koncepty: JOIN, GROUP BY, HAVING, COUNT
 -- Poziom: podstawowy
