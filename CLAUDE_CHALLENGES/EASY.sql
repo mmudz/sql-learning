@@ -141,3 +141,23 @@ SELECT
     RANK() OVER (PARTITION BY products.category ORDER BY products.price DESC) AS cat_rank
 FROM products
 ORDER BY cat_rank ASC;
+
+-- Zadanie: Najtańszy produkt z każdej kategorii
+-- Koncepty: CTE, JOIN, MIN, GROUP BY
+-- Poziom: średni
+
+WITH lowest_price AS (
+    SELECT
+        MIN(price) AS min,
+        category
+    FROM products
+    GROUP BY category
+)
+SELECT
+    products.name,
+    lowest_price.category,
+    products.price
+FROM products
+JOIN lowest_price
+    ON products.price = lowest_price.min
+    AND products.category = lowest_price.category;
