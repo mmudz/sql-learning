@@ -237,3 +237,25 @@ SELECT
     total_amount,
     LAG(total_amount) OVER (PARTITION BY name ORDER BY order_date ASC) AS prev_order_amount
 FROM orders_numbered;
+
+-- Zadanie: Skumulowany przychód per kategoria (rosnąco)
+-- Koncepty: CTE, SUM() OVER, PARTITION BY, Window Functions
+-- Poziom: średni-trudny
+
+WITH product_revenue AS (
+    SELECT
+        product_id,
+        SUM(quantity * unit_price) AS revenue
+    FROM order_items
+    GROUP BY product_id
+)
+SELECT
+    products.name,
+    products.category,
+    products.price,
+    product_revenue.revenue,
+    SUM(product_revenue.revenue) OVER (PARTITION BY products.category ORDER BY product_revenue.revenue ASC) AS cumulative
+FROM product_revenue
+JOIN products
+    ON product_revenue.product_id = products.product_id
+ORDER BY products.category, cumulative ASC;
