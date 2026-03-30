@@ -46,3 +46,13 @@ FROM orders
 GROUP BY DATEPART(month, order_date)
 HAVING SUM(total_amount) > 500
 ORDER BY month;
+
+-- Zadanie: Klienci bez żadnego zamówienia
+-- Koncepty: LEFT JOIN, IS NULL
+-- Poziom: podstawowy-średni
+
+SELECT customers.*
+FROM customers
+LEFT JOIN orders
+    ON customers.customer_id = orders.customer_id
+WHERE orders.order_id IS NULL;
