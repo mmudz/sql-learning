@@ -116,3 +116,16 @@ SELECT
     ROUND((price / max_price.max) * 100, 2) AS percentage
 FROM products
 CROSS JOIN max_price;
+
+-- Zadanie: Ranking klientów według łącznej kwoty zamówień
+-- Koncepty: JOIN, GROUP BY, SUM, RANK(), OVER
+-- Poziom: średni
+
+SELECT
+    customers.name,
+    SUM(total_amount) AS total,
+    RANK() OVER (ORDER BY SUM(total_amount) DESC) AS rank
+FROM customers
+JOIN orders
+    ON customers.customer_id = orders.customer_id
+GROUP BY customers.name;
