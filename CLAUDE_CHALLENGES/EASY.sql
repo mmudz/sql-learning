@@ -161,3 +161,27 @@ FROM products
 JOIN lowest_price
     ON products.price = lowest_price.min
     AND products.category = lowest_price.category;
+
+-- Zadanie: Przychód per produkt i jego udział procentowy w całości
+-- Koncepty: CTE x2, CROSS JOIN, JOIN, SUM, ROUND
+-- Poziom: średni-trudny
+
+WITH overall_revenue AS (
+    SELECT SUM(quantity * unit_price) AS revenue
+    FROM order_items
+),
+product_revenue AS (
+    SELECT
+        product_id,
+        SUM(unit_price * quantity) AS prod_revenue
+    FROM order_items
+    GROUP BY product_id
+)
+SELECT
+    products.name,
+    product_revenue.prod_revenue,
+    ROUND(product_revenue.prod_revenue * 100 / overall_revenue.revenue, 2) AS perc
+FROM product_revenue
+CROSS JOIN overall_revenue
+JOIN products
+    ON products.product_id = product_revenue.product_id;
