@@ -185,3 +185,16 @@ FROM product_revenue
 CROSS JOIN overall_revenue
 JOIN products
     ON products.product_id = product_revenue.product_id;
+
+-- Zadanie: Numerowanie zamówień każdego klienta chronologicznie
+-- Koncepty: JOIN, ROW_NUMBER(), OVER, PARTITION BY
+-- Poziom: średni
+
+SELECT
+    customers.name,
+    orders.order_date,
+    ROW_NUMBER() OVER (PARTITION BY customers.name ORDER BY orders.order_date ASC) AS numb
+FROM customers
+JOIN orders
+    ON customers.customer_id = orders.customer_id
+ORDER BY customers.name, orders.order_date;
