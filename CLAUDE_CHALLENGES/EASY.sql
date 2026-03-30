@@ -259,3 +259,20 @@ FROM product_revenue
 JOIN products
     ON product_revenue.product_id = products.product_id
 ORDER BY products.category, cumulative ASC;
+
+-- Zadanie: Narastająca suma zamówień per klient chronologicznie
+-- Koncepty: JOIN, SUM() OVER, PARTITION BY, Window Functions
+-- Poziom: średni
+
+SELECT
+    customers.name,
+    orders.order_date,
+    orders.total_amount,
+    SUM(orders.total_amount) OVER (
+        PARTITION BY customers.name 
+        ORDER BY orders.order_date ASC
+    ) AS cumulative
+FROM customers
+JOIN orders
+    ON orders.customer_id = customers.customer_id
+ORDER BY customers.name, orders.order_date ASC;
