@@ -56,3 +56,17 @@ FROM customers
 LEFT JOIN orders
     ON customers.customer_id = orders.customer_id
 WHERE orders.order_id IS NULL;
+
+-- Zadanie: Produkty z przychodem powyżej 500
+-- Koncepty: JOIN, GROUP BY, HAVING, SUM
+-- Poziom: podstawowy-średni
+
+SELECT
+    products.name,
+    SUM(order_items.unit_price * order_items.quantity) AS total
+FROM products
+JOIN order_items
+    ON products.product_id = order_items.product_id
+GROUP BY products.name
+HAVING SUM(order_items.unit_price * order_items.quantity) > 500
+ORDER BY total DESC;
