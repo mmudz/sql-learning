@@ -70,3 +70,20 @@ JOIN order_items
 GROUP BY products.name
 HAVING SUM(order_items.unit_price * order_items.quantity) > 500
 ORDER BY total DESC;
+
+-- Zadanie: Liczba różnych kategorii produktów per klient
+-- Koncepty: JOIN x3, GROUP BY, COUNT DISTINCT
+-- Poziom: średni
+
+SELECT
+    customers.name,
+    COUNT(DISTINCT category) AS cat_count
+FROM customers
+JOIN orders
+    ON customers.customer_id = orders.customer_id
+JOIN order_items
+    ON orders.order_id = order_items.order_id
+JOIN products
+    ON order_items.product_id = products.product_id
+GROUP BY customers.name
+ORDER BY cat_count DESC;
