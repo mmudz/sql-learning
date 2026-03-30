@@ -87,3 +87,18 @@ JOIN products
     ON order_items.product_id = products.product_id
 GROUP BY customers.name
 ORDER BY cat_count DESC;
+
+-- Zadanie: Pierwszy, ostatni order i liczba dni między nimi per klient
+-- Koncepty: JOIN, GROUP BY, MIN, MAX, DATEDIFF
+-- Poziom: średni
+
+SELECT
+    customers.name,
+    MIN(order_date) AS earliest,
+    MAX(order_date) AS latest,
+    DATEDIFF(day, MIN(order_date), MAX(order_date)) AS days_between
+FROM customers
+JOIN orders
+    ON customers.customer_id = orders.customer_id
+GROUP BY customers.name
+ORDER BY customers.name;
