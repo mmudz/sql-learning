@@ -33,3 +33,16 @@ JOIN order_items
     ON order_items.order_id = orders.order_id
 JOIN products
     ON products.product_id = order_items.product_id;
+
+-- Zadanie: Miesiące z przychodem powyżej 500
+-- Koncepty: DATEPART, GROUP BY, HAVING, COUNT, SUM
+-- Poziom: podstawowy-średni
+
+SELECT
+    DATEPART(month, order_date) AS month,
+    COUNT(customer_id) AS order_number,
+    SUM(total_amount) AS sum
+FROM orders
+GROUP BY DATEPART(month, order_date)
+HAVING SUM(total_amount) > 500
+ORDER BY month;
