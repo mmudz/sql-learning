@@ -129,3 +129,15 @@ FROM customers
 JOIN orders
     ON customers.customer_id = orders.customer_id
 GROUP BY customers.name;
+
+-- Zadanie: Ranking produktów według ceny w obrębie kategorii
+-- Koncepty: RANK(), OVER, PARTITION BY
+-- Poziom: średni
+
+SELECT
+    products.name,
+    products.price,
+    products.category,
+    RANK() OVER (PARTITION BY products.category ORDER BY products.price DESC) AS cat_rank
+FROM products
+ORDER BY cat_rank ASC;
