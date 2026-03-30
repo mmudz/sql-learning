@@ -102,3 +102,17 @@ JOIN orders
     ON customers.customer_id = orders.customer_id
 GROUP BY customers.name
 ORDER BY customers.name;
+
+-- Zadanie: Cena produktu jako procent najdroższego produktu
+-- Koncepty: CTE, CROSS JOIN, ROUND
+-- Poziom: średni
+
+WITH max_price AS (
+    SELECT MAX(price) AS max
+    FROM products
+)
+SELECT
+    products.name,
+    ROUND((price / max_price.max) * 100, 2) AS percentage
+FROM products
+CROSS JOIN max_price;
