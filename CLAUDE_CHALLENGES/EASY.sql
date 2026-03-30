@@ -216,3 +216,24 @@ WITH first_orders AS (
 SELECT name, order_date, total_amount
 FROM first_orders
 WHERE numb = 1;
+
+-- Zadanie: Kwota poprzedniego zamówienia klienta (LAG)
+-- Koncepty: CTE, ROW_NUMBER(), LAG(), OVER, PARTITION BY
+-- Poziom: średni-trudny
+
+WITH orders_numbered AS (
+    SELECT
+        customers.name,
+        orders.order_date,
+        orders.total_amount,
+        ROW_NUMBER() OVER (PARTITION BY customers.name ORDER BY orders.order_date ASC) AS numb
+    FROM customers
+    JOIN orders
+        ON customers.customer_id = orders.customer_id
+)
+SELECT
+    name,
+    order_date,
+    total_amount,
+    LAG(total_amount) OVER (PARTITION BY name ORDER BY order_date ASC) AS prev_order_amount
+FROM orders_numbered;
