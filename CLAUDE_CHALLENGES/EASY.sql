@@ -198,3 +198,21 @@ FROM customers
 JOIN orders
     ON customers.customer_id = orders.customer_id
 ORDER BY customers.name, orders.order_date;
+
+-- Zadanie: Pierwsze zamówienie każdego klienta
+-- Koncepty: CTE, ROW_NUMBER(), OVER, PARTITION BY, WHERE
+-- Poziom: średni
+
+WITH first_orders AS (
+    SELECT
+        customers.name,
+        orders.order_date,
+        orders.total_amount,
+        ROW_NUMBER() OVER (PARTITION BY customers.name ORDER BY orders.order_date ASC) AS numb
+    FROM customers
+    JOIN orders
+        ON customers.customer_id = orders.customer_id
+)
+SELECT name, order_date, total_amount
+FROM first_orders
+WHERE numb = 1;
